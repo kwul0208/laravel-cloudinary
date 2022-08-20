@@ -19,4 +19,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('/images/test/{id}', [ImageController::class, 'test'])->name('images.test');
 Route::resource('images', ImageController::class);
+

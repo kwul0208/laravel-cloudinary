@@ -7,15 +7,16 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>Halaman Tambah Upload Image</h2>
+    <h2>Halaman update Upload Image</h2>
     @if (session('success'))
         <div>{{ session('success') }}</div>
     @endif
-    <form action="{{ route('images.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('images.test', $image) }}" method="POST" enctype="multipart/form-data">
         @csrf
+        <input type="text" name="old_img" value="{{ $image->image }}">
         <input type="file" name="image">
         <p>
-            <button type="submit">Upload</button>
+            <button type="submit">Upload {{ $image }}</button>
         </p>
     </form>
 </body>

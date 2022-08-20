@@ -36,18 +36,28 @@ class ImageController extends Controller
         return view('upload_update', compact('image'));
     }
 
-    public function update(Request $request, Image $image)
-    {
-        $file   = $request->file('image');
-        $result = CloudinaryStorage::replace($image->image, $file->getRealPath(), $file->getClientOriginalName());
-        $image->update(['image' => $result]);
-        return redirect()->route('images.index')->withSuccess('berhasil upload');
-    }
 
     public function destroy(Image $image)
     {   
+        return $image;
         CloudinaryStorage::delete($image->image);
         $image->delete();
-        return redirect()->route('images.index')->withSuccess('berhasil hapus');;
+        return redirect()->route('images.index')->withSuccess('berhasil hapus');
+    }
+
+    public function test(Request $request, $id)
+    {
+        $old_img = $request->old_img;
+        $image  = $request->file('image');
+        
+        CloudinaryStorage::delete($old_img);
+
+        $result = CloudinaryStorage::upload($image->getRealPath(), $image->getClientOriginalName()); 
+
+        Image::where('id', $id)->update([
+            'image' => $result
+        ]);
+
+        return redirect()->route('images.index')->withSuccess('berhasil upload');
     }
 }
